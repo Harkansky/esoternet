@@ -6,6 +6,7 @@ use App\Repository\EntityRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EntityRepository::class)]
+#[ORM\InheritanceType("JOINED")]
 class Entity
 {
     #[ORM\Id]
@@ -33,6 +34,15 @@ class Entity
 
     #[ORM\Column(length: 255)]
     private ?string $weakness = null;
+
+    #[ORM\ManyToOne(inversedBy: 'entities')]
+    private ?Religion $entityReligion = null;
+
+    #[ORM\ManyToOne(inversedBy: 'entities')]
+    private ?Region $location = null;
+
+    #[ORM\ManyToOne(inversedBy: 'entities')]
+    private ?Currency $payment = null;
 
     public function getId(): ?int
     {
@@ -119,6 +129,42 @@ class Entity
     public function setWeakness(string $weakness): static
     {
         $this->weakness = $weakness;
+
+        return $this;
+    }
+
+    public function getEntityReligion(): ?Religion
+    {
+        return $this->entityReligion;
+    }
+
+    public function setEntityReligion(?Religion $entityReligion): static
+    {
+        $this->entityReligion = $entityReligion;
+
+        return $this;
+    }
+
+    public function getLocation(): ?Region
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Region $location): static
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    public function getPayment(): ?Currency
+    {
+        return $this->payment;
+    }
+
+    public function setPayment(?Currency $payment): static
+    {
+        $this->payment = $payment;
 
         return $this;
     }

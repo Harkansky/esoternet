@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,6 +28,17 @@ class User
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $registrationDate = null;
+
+    /**
+     * @var Collection<int, Order>
+     */
+    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'purchaser')]
+    private Collection $userPurchase;
+
+    public function __construct()
+    {
+        $this->userPurchase = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -83,6 +96,36 @@ class User
     public function setRegistrationDate(\DateTimeInterface $registrationDate): static
     {
         $this->registrationDate = $registrationDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getUserPurchase(): Collection
+    {
+        return $this->userPurchase;
+    }
+
+    public function addUserPurchase(Order $userPurchase): static
+    {
+        if (!$this->userPurchase->contains($userPurchase)) {
+            $this->userPurchase->add($userPurchase);
+            $userPurchase->setPurchaser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserPurchase(Order $userPurchase): static
+    {
+        if ($this->userPurchase->removeElement($userPurchase)) {
+            // set the owning side to null (unless already changed)
+            if ($userPurchase->getPurchaser() === $this) {
+                $userPurchase->setPurchaser(null);
+            }
+        }
 
         return $this;
     }
