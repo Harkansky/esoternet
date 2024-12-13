@@ -30,6 +30,10 @@ class Pact
     #[ORM\ManyToMany(targetEntity: Item::class, mappedBy: 'pactLink')]
     private Collection $items;
 
+    #[ORM\ManyToOne(inversedBy: 'pacts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?entity $entity = null;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -99,6 +103,18 @@ class Pact
         if ($this->items->removeElement($item)) {
             $item->removePactLink($this);
         }
+
+        return $this;
+    }
+
+    public function getEntity(): ?entity
+    {
+        return $this->entity;
+    }
+
+    public function setEntity(?entity $entity): static
+    {
+        $this->entity = $entity;
 
         return $this;
     }

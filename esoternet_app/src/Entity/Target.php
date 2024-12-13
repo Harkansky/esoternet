@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TargetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,6 +24,23 @@ class Target
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $birthDate = null;
+
+    /**
+     * @var Collection<int, Ritual>
+     */
+    #[ORM\ManyToMany(targetEntity: Ritual::class, mappedBy: 'target')]
+    private Collection $rituals;
+
+    #[ORM\Column(length: 255)]
+    private ?string $type = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
+
+    public function __construct()
+    {
+        $this->rituals = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -60,6 +79,57 @@ class Target
     public function setBirthDate(?\DateTimeInterface $birthDate): static
     {
         $this->birthDate = $birthDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ritual>
+     */
+    public function getRituals(): Collection
+    {
+        return $this->rituals;
+    }
+
+    public function addRitual(Ritual $ritual): static
+    {
+        if (!$this->rituals->contains($ritual)) {
+            $this->rituals->add($ritual);
+            $ritual->addTarget($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRitual(Ritual $ritual): static
+    {
+        if ($this->rituals->removeElement($ritual)) {
+            $ritual->removeTarget($this);
+        }
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

@@ -22,14 +22,14 @@ class Currency
     private ?string $description = null;
 
     /**
-     * @var Collection<int, Entity>
+     * @var Collection<int, Item>
      */
-    #[ORM\OneToMany(targetEntity: Entity::class, mappedBy: 'payment')]
-    private Collection $entities;
+    #[ORM\OneToMany(targetEntity: Item::class, mappedBy: 'payment')]
+    private Collection $items;
 
     public function __construct()
     {
-        $this->entities = new ArrayCollection();
+        $this->items = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -62,29 +62,29 @@ class Currency
     }
 
     /**
-     * @return Collection<int, Entity>
+     * @return Collection<int, Item>
      */
-    public function getEntities(): Collection
+    public function getItems(): Collection
     {
-        return $this->entities;
+        return $this->items;
     }
 
-    public function addEntity(Entity $entity): static
+    public function addItem(Item $item): static
     {
-        if (!$this->entities->contains($entity)) {
-            $this->entities->add($entity);
-            $entity->setPayment($this);
+        if (!$this->items->contains($item)) {
+            $this->items->add($item);
+            $item->setPayment($this);
         }
 
         return $this;
     }
 
-    public function removeEntity(Entity $entity): static
+    public function removeItem(Item $item): static
     {
-        if ($this->entities->removeElement($entity)) {
+        if ($this->items->removeElement($item)) {
             // set the owning side to null (unless already changed)
-            if ($entity->getPayment() === $this) {
-                $entity->setPayment(null);
+            if ($item->getPayment() === $this) {
+                $item->setPayment(null);
             }
         }
 
