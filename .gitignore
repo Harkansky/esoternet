@@ -53,3 +53,6 @@
 
 # JetBrains workspace files
 /.idea
+
+# Sensitive env dev file
+.env.dev
