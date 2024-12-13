@@ -58,6 +58,9 @@ class Item
     #[ORM\ManyToMany(targetEntity: Material::class, inversedBy: 'ingredients')]
     private Collection $materialLink;
 
+    #[ORM\ManyToOne(inversedBy: 'items')]
+    private ?Currency $payment = null;
+
     public function __construct()
     {
         $this->listPurchase = new ArrayCollection();
@@ -235,6 +238,18 @@ class Item
     public function removeMaterialLink(Material $materialLink): static
     {
         $this->materialLink->removeElement($materialLink);
+
+        return $this;
+    }
+
+    public function getPayment(): ?Currency
+    {
+        return $this->payment;
+    }
+
+    public function setPayment(?Currency $payment): static
+    {
+        $this->payment = $payment;
 
         return $this;
     }

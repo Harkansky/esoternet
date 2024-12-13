@@ -4,21 +4,23 @@ services:
       context: .
       dockerfile: dockerfile
     ports:
-      - "8000:8000" # Map Symfony's built-in server to localhost:8000
+      - "${WEB_PORT}:8000" # Map Symfony's built-in server to localhost:8000
     volumes:
       - .:/app:cached # Sync project files for live updates
     depends_on:
       - db
     environment:
       APP_ENV: dev
-      DATABASE_URL: "postgresql://symfony:symfony@db:5432/symfony"
+      DATABASE_URL: "postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/symfony"
 
   db:
     image: postgres:15
     environment:
-      POSTGRES_USER: symfony
-      POSTGRES_PASSWORD: symfony
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: symfony
+    ports:
+      - "${DB_PORT}:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
 

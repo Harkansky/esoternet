@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EntityRepository::class)]
@@ -41,8 +43,23 @@ class Entity
     #[ORM\ManyToOne(inversedBy: 'entities')]
     private ?Region $location = null;
 
-    #[ORM\ManyToOne(inversedBy: 'entities')]
-    private ?Currency $payment = null;
+    /**
+     * @var Collection<int, Pact>
+     */
+    #[ORM\OneToMany(targetEntity: Pact::class, mappedBy: 'entity', orphanRemoval: true)]
+    private Collection $pacts;
+
+    /**
+     * @var Collection<int, Ritual>
+     */
+    #[ORM\OneToMany(targetEntity: Ritual::class, mappedBy: 'entity', orphanRemoval: true)]
+    private Collection $rituals;
+
+    public function __construct()
+    {
+        $this->pacts = new ArrayCollection();
+        $this->rituals = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -157,14 +174,62 @@ class Entity
         return $this;
     }
 
-    public function getPayment(): ?Currency
+    /**
+     * @return Collection<int, Pact>
+     */
+    public function getPacts(): Collection
     {
-        return $this->payment;
+        return $this->pacts;
     }
 
-    public function setPayment(?Currency $payment): static
+    public function addPact(Pact $pact): static
     {
-        $this->payment = $payment;
+        if (!$this->pacts->contains($pact)) {
+            $this->pacts->add($pact);
+            $pact->setEntity($this);
+        }
+
+        return $this;
+    }
+
+    public function removePact(Pact $pact): static
+    {
+        if ($this->pacts->removeElement($pact)) {
+            // set the owning side to null (unless already changed)
+            if ($pact->getEntity() === $this) {
+                $pact->setEntity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ritual>
+     */
+    public function getRituals(): Collection
+    {
+        return $this->rituals;
+    }
+
+    public function addRitual(Ritual $ritual): static
+    {
+        if (!$this->rituals->contains($ritual)) {
+            $this->rituals->add($ritual);
+            $ritual->setEntity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRitual(Ritual $ritual): static
+    {
+        if ($this->rituals->removeElement($ritual)) {
+            // set the owning side to null (unless already changed)
+            if ($ritual->getEntity() === $this) {
+                $ritual->setEntity(null);
+            }
+        }
 
         return $this;
     }

@@ -22,18 +22,26 @@ class Ritual
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $datePerformed = null;
-
     /**
      * @var Collection<int, Item>
      */
     #[ORM\ManyToMany(targetEntity: Item::class, mappedBy: 'ritualLink')]
     private Collection $items;
 
+    /**
+     * @var Collection<int, target>
+     */
+    #[ORM\ManyToMany(targetEntity: target::class, inversedBy: 'rituals')]
+    private Collection $target;
+
+    #[ORM\ManyToOne(inversedBy: 'rituals')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Entity $entity = null;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
+        $this->target = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -65,18 +73,6 @@ class Ritual
         return $this;
     }
 
-    public function getDatePerformed(): ?\DateTimeInterface
-    {
-        return $this->datePerformed;
-    }
-
-    public function setDatePerformed(\DateTimeInterface $datePerformed): static
-    {
-        $this->datePerformed = $datePerformed;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Item>
      */
@@ -100,6 +96,42 @@ class Ritual
         if ($this->items->removeElement($item)) {
             $item->removeRitualLink($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, target>
+     */
+    public function getTarget(): Collection
+    {
+        return $this->target;
+    }
+
+    public function addTarget(target $target): static
+    {
+        if (!$this->target->contains($target)) {
+            $this->target->add($target);
+        }
+
+        return $this;
+    }
+
+    public function removeTarget(target $target): static
+    {
+        $this->target->removeElement($target);
+
+        return $this;
+    }
+
+    public function getEntity(): ?Entity
+    {
+        return $this->entity;
+    }
+
+    public function setEntity(?Entity $entity): static
+    {
+        $this->entity = $entity;
 
         return $this;
     }
