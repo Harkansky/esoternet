@@ -7,6 +7,31 @@
         <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg">
             <h1 class="text-2xl font-semibold text-center mb-6">Payer avec Stripe</h1>
 
+            <!-- Formulaire dynamique pour les informations utilisateur -->
+            <form id="user-info-form" class="mb-6">
+                <div class="mb-4">
+                    <label for="first-name" class="block text-sm font-medium">Prénom</label>
+                    <input type="text" id="first-name" name="first-name" class="input input-bordered w-full" placeholder="Votre prénom" required>
+                </div>
+                <div class="mb-4">
+                    <label for="last-name" class="block text-sm font-medium">Nom</label>
+                    <input type="text" id="last-name" name="last-name" class="input input-bordered w-full" placeholder="Votre nom" required>
+                </div>
+                <div class="mb-4">
+                    <label for="country" class="block text-sm font-medium">Pays</label>
+                    <select id="country" name="country" class="select select-bordered w-full" required>
+                        <option value="" selected>-- Choisir un pays --</option>
+                        <option value="FR">France</option>
+                        <option value="US">États-Unis</option>
+                        <option value="CA">Canada</option>
+                        <option value="BE">Belgique</option>
+                    </select>
+                </div>
+
+                <!-- Conteneur dynamique pour les champs Code Postal / État -->
+                <div id="dynamic-fields"></div>
+            </form>
+
             <!-- Formulaire de paiement Stripe -->
             <form id="payment-form">
                 <div id="card-element" class="mb-4">
@@ -24,49 +49,93 @@
     </div>
 
     <script src="https://js.stripe.com/v3/"></script>
-
     <script>
-        // Clé publique Stripe (injected from Symfony controller)
-        var stripe = Stripe('{{ stripe_public_key }}'); // Utilise la clé publique définie dans .env
-        var elements = stripe.elements();
+        document.addEventListener('DOMContentLoaded', function () {
+            const countrySelect = document.getElementById('country');
+            const dynamicFieldsContainer = document.getElementById('dynamic-fields');
 
-        // Création de l'élément carte
-        var card = elements.create('card');
-        card.mount('#card-element');
+            // Données des champs dynamiques selon le pays
+            const countryData = {
+                FR: { postalCode: "Code Postal" },
+                US: { state: "État", postalCode: "ZIP Code" },
+                CA: { province: "Province", postalCode: "Code Postal" },
+                BE: { postalCode: "Code Postal" }
+            };
 
-        // Soumettre le formulaire et obtenir le client secret
-        var form = document.getElementById('payment-form');
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
+            // Fonction pour mettre à jour les champs dynamiques
+            const updateDynamicFields = (countryCode) => {
+                dynamicFieldsContainer.innerHTML = ""; // Réinitialise les champs dynamiques
+                const fields = countryData[countryCode] || {};
 
-            // Créer un paiement intent côté serveur (via ton Symfony controller)
-            fetch('/create-payment-intent', {
-                method: 'POST',
-            })
-                .then(function(response) {
-                    return response.json();
+                // Ajouter les champs dynamiques en fonction du pays
+                if (fields.postalCode) {
+                    dynamicFieldsContainer.innerHTML += `
+                    <div class="mb-4">
+                        <label for="postal-code" class="block text-sm font-medium">${fields.postalCode}</label>
+                        <input type="text" id="postal-code" name="postal-code" class="input input-bordered w-full" placeholder="${fields.postalCode}" required>
+                    </div>
+                `;
+                }
+                if (fields.state) {
+                    dynamicFieldsContainer.innerHTML += `
+                    <div class="mb-4">
+                        <label for="state" class="block text-sm font-medium">${fields.state}</label>
+                        <input type="text" id="state" name="state" class="input input-bordered w-full" placeholder="${fields.state}" required>
+                    </div>
+                `;
+                }
+                if (fields.province) {
+                    dynamicFieldsContainer.innerHTML += `
+                    <div class="mb-4">
+                        <label for="province" class="block text-sm font-medium">${fields.province}</label>
+                        <input type="text" id="province" name="province" class="input input-bordered w-full" placeholder="${fields.province}" required>
+                    </div>
+                `;
+                }
+            };
+
+            // Écouteur pour détecter les changements de pays
+            countrySelect.addEventListener('change', function () {
+                const selectedCountry = countrySelect.value;
+                updateDynamicFields(selectedCountry);
+            });
+
+            // Stripe.js : configuration du formulaire de paiement
+            var stripe = Stripe('{{ stripe_public_key }}'); // Clé publique Stripe
+            var elements = stripe.elements();
+            var card = elements.create('card');
+            card.mount('#card-element');
+
+            var form = document.getElementById('payment-form');
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                fetch('/create-payment-intent', {
+                    method: 'POST',
                 })
-                .then(function(paymentData) {
-                    var clientSecret = paymentData.clientSecret;
-
-                    // Utilisation de Stripe.js pour confirmer le paiement
-                    stripe.confirmCardPayment(clientSecret, {
-                        payment_method: {
-                            card: card,
-                        },
+                    .then(function (response) {
+                        return response.json();
                     })
-                        .then(function(result) {
-                            if (result.error) {
-                                // Afficher l'erreur à l'utilisateur
-                                var errorElement = document.getElementById('card-errors');
-                                errorElement.textContent = result.error.message;
-                            } else {
-                                if (result.paymentIntent.status === 'succeeded') {
-                                    alert('Paiement réussi !');
+                    .then(function (paymentData) {
+                        var clientSecret = paymentData.clientSecret;
+
+                        stripe.confirmCardPayment(clientSecret, {
+                            payment_method: {
+                                card: card,
+                            },
+                        })
+                            .then(function (result) {
+                                if (result.error) {
+                                    var errorElement = document.getElementById('card-errors');
+                                    errorElement.textContent = result.error.message;
+                                } else {
+                                    if (result.paymentIntent.status === 'succeeded') {
+                                        alert('Paiement réussi !');
+                                    }
                                 }
-                            }
-                        });
-                });
+                            });
+                    });
+            });
         });
     </script>
 {% endblock %}
