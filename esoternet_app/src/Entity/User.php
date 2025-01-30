@@ -2,15 +2,21 @@
 
 namespace App\Entity;
 
+use App\Enum\UserAccountStatusEnum;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,6 +32,40 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
+    private ?string $plainPassword = null;
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $resetPasswordToken = null;
+
+    public function getResetPasswordToken(): ?string
+    {
+        return $this->resetPasswordToken;
+    }
+
+    public function setResetPasswordToken(?string $resetPasswordToken): static
+    {
+        $this->resetPasswordToken = $resetPasswordToken;
+
+        return $this;
+    }
+
+
+    #[ORM\Column(enumType: UserAccountStatusEnum::class)]
+    private ?UserAccountStatusEnum $accountStatus = UserAccountStatusEnum::INACTIVE;
+
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
+
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $registrationDate = null;
 
@@ -34,6 +74,12 @@ class User
      */
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'purchaser')]
     private Collection $userPurchase;
+
+    #[ORM\Column]
+    private bool $isVerified = false;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $confirmEmailToken = null;
 
     public function __construct()
     {
@@ -72,6 +118,19 @@ class User
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
 
         return $this;
     }
@@ -126,6 +185,52 @@ class User
                 $userPurchase->setPurchaser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAccountStatus(): ?UserAccountStatusEnum
+    {
+        return $this->accountStatus;
+    }
+
+    public function setAccountStatus(UserAccountStatusEnum $accountStatus): static
+    {
+        $this->accountStatus = $accountStatus;
+
+        return $this;
+    }
+
+    public function eraseCredentials(): void
+    {
+        $this->plainPassword = null;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getConfirmEmailToken(): ?string
+    {
+        return $this->confirmEmailToken;
+    }
+
+    public function setConfirmEmailToken(?string $confirmEmailToken): static
+    {
+        $this->confirmEmailToken = $confirmEmailToken;
 
         return $this;
     }
