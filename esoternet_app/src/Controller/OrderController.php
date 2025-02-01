@@ -1,39 +1,31 @@
 <?php
+
 namespace App\Controller;
 
-
 use App\Entity\Order;
-use App\Form\PaymentType;
-use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class OrderController extends AbstractController
 {
-    #[Route('/order/payment', name: 'order_payment')]
-    public function payment(Request $request): Response
+    private ManagerRegistry $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
     {
-        // Créer une nouvelle commande (Order)
-        $order = new Order();
+        $this->doctrine = $doctrine;
+    }
 
-        // Créer le formulaire PaymentType
-        $form = $this->createForm(PaymentType::class, $order);
-
-        // Gérer Compile Error: Cannot declare class OrderController, because the name is already in usela soumission du formulaire
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Logique pour traiter la commande (exemple : sauvegarde ou appel API)
-            $this->addFlash('success', 'Votre paiement a été enregistré avec succès.');
-
-            // Redirection après succès
-            return $this->redirectToRoute('order_success'); // Créez cette route si nécessaire
+    #[Route('/order/{id}', name: 'order_show', requirements: ['id' => '\d+'])]
+    public function show(Order $order): Response
+    {
+        if (!$order) {
+            throw $this->createNotFoundException('Order not found');
         }
 
-        // Rendre le formulaire dans le template Twig
-        return $this->render('order/payment.html.twig', [
-            'form' => $form->createView(),
+        return $this->render('order/show.html.twig', [
+            'order' => $order,
         ]);
     }
 }

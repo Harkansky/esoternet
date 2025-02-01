@@ -17,9 +17,8 @@
                         <p><strong>Effet :</strong> {{ pact.effect }}</p>
                         <p><strong>Durée :</strong> {{ pact.duration }} jours</p>
 
-                        <!-- Bouton pour accéder au paiement (décoratif pour l'instant) -->
                         <div class="card-actions justify-end">
-                            <button class="btn btn-primary">Accéder au paiement</button>
+                            <a href="{{ path('payment', {id: pact.id}) }}" class="btn btn-primary">Accéder au paiement</a>
                         </div>
                     </div>
                 </div>
