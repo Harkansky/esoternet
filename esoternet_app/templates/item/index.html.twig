@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mx-auto p-4">
+        <h1 class="text-2xl font-bold text-center mb-6">Liste des Items</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for item in items %}
+                <div class="card bg-base-100 shadow-xl">
+                    <div class="card-body">
+                        <h2 class="card-title text-lg font-semibold">{{ item.name }}</h2>
+                        <p class="text-gray-600">{{ item.description ?: 'Aucune description disponible.' }}</p>
+                        <p class="text-blue-500 font-bold">Prix : {{ item.price | number_format(2, ',', ' ') }} €</p>
+                        <p class="text-gray-500 text-sm">Ajouté le : {{ item.dateAdded|date('d/m/Y') }}</p>
+                        <div class="card-actions justify-end">
+                            <!-- Bouton de paiement -->
+                            <a href="{{ path('payment', {'id': item.id}) }}" class="btn btn-primary">Procéder au paiement</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p class="col-span-full text-center text-gray-500">Aucun item disponible pour le moment.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
