@@ -1,0 +1,73 @@
+{# templates/item/new.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un Item{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto p-4">
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h1 class="card-title text-2xl">Créer un nouvel Item</h1>
+                {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+                <div class="form-control">
+                    {{ form_row(form.name, {'attr': {'class': 'input input-bordered'}}) }}
+                </div>
+                <div class="form-control">
+                    {{ form_row(form.description, {'attr': {'class': 'input input-bordered'}}) }}
+                </div>
+                <div class="form-control">
+                    {{ form_row(form.price, {'attr': {'class': 'input input-bordered'}}) }}
+                </div>
+
+                <h2 class="mt-6 text-lg font-bold">Rituels associés existants</h2>
+                <div class="form-control">
+                    {{ form_row(form.existingRituals, {'attr': {'class': 'select select-bordered'}}) }}
+                </div>
+
+                <h2 class="mt-6 text-lg font-bold">Ajouter de nouveaux rituels</h2>
+                <div id="new-rituals" data-prototype="{{ form_widget(form.newRituals.vars.prototype)|e('html_attr') }}" class="space-y-2">
+                    {{ form_widget(form.newRituals) }}
+                </div>
+                <button type="button" id="add-new-ritual" class="btn btn-secondary">Ajouter un rituel</button>
+
+                <h2 class="mt-6 text-lg font-bold">Pactes associés existants</h2>
+                <div class="form-control">
+                    {{ form_row(form.existingPacts, {'attr': {'class': 'select select-bordered'}}) }}
+                </div>
+
+                <h2 class="mt-6 text-lg font-bold">Ajouter de nouveaux pactes</h2>
+                <div id="new-pacts" data-prototype="{{ form_widget(form.newPacts.vars.prototype)|e('html_attr') }}" class="space-y-2">
+                    {{ form_widget(form.newPacts) }}
+                </div>
+                <button type="button" id="add-new-pact" class="btn btn-secondary">Ajouter un pacte</button>
+
+                <div class="mt-6">
+                    <button type="submit" class="btn btn-primary w-full">Créer</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var ritualContainer = $('#new-rituals');
+            $('#add-new-ritual').on('click', function(e) {
+                e.preventDefault();
+                var index = ritualContainer.children().length;
+                var prototype = ritualContainer.data('prototype');
+                var newForm = prototype.replace(/__name__/g, index);
+                ritualContainer.append(newForm);
+            });
+            var pactContainer = $('#new-pacts');
+            $('#add-new-pact').on('click', function(e) {
+                e.preventDefault();
+                var index = pactContainer.children().length;
+                var prototype = pactContainer.data('prototype');
+                var newForm = prototype.replace(/__name__/g, index);
+                pactContainer.append(newForm);
+            });
+        });
+    </script>
+{% endblock %}
