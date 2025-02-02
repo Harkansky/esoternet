@@ -61,7 +61,7 @@ class ItemType extends AbstractType
                 'by_reference' => false,
                 'prototype' => true,
                 'required' => false,
-                'mapped' => false,  // Ajoutez cette ligne
+                'mapped' => false,
                 'label' => 'Nouveaux pactes',
             ]);
     }

@@ -25,9 +25,9 @@ class RitualType extends AbstractType
             ])
             ->add('datePerformed', DateType::class, [
                 'label'    => 'Date de réalisation',
-                'widget'   => 'single_text', // Affichage en input HTML5 (date picker)
+                'widget'   => 'single_text',
                 'required' => false,
-                'mapped'   => false,  // Ne pas lier ce champ à la propriété de l'entité
+                'mapped'   => false,
                 'attr'     => ['class' => 'input input-bordered']
             ]);
     }

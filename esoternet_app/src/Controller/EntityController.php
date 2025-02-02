@@ -16,7 +16,6 @@ class EntityController extends AbstractController
     #[Route('/entity', name: 'entity_list')]
     public function list(EntityManagerInterface $em): Response
     {
-        // Récupération des entités
         $entities = $em->getRepository(Entity::class)->findAll();
         $superiorEntities = $em->getRepository(SuperiorEntity::class)->findAll();
         $minorEntities = $em->getRepository(MinorEntity::class)->findAll();
