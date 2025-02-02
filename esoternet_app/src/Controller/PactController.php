@@ -12,7 +12,6 @@ class PactController extends AbstractController
     #[Route('/pact', name: 'pact_list')]
     public function list(EntityManagerInterface $em): Response
     {
-        // Récupération des pactes
         $pacts = $em->getRepository(Pact::class)->findAll();
 
         return $this->render('pact/list.html.twig', [

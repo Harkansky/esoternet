@@ -1,0 +1,28 @@
+{# templates/item/show.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de l'Item{% endblock %}
+
+{% block body %}
+    <h1>{{ item.name }}</h1>
+    <p>Description: {{ item.description }}</p>
+    <p>Prix: {{ item.price }} €</p>
+
+    <h2>Rituels associés</h2>
+    <ul>
+        {% for ritual in item.ritualLink %}
+            <li>{{ ritual.name }} - {{ ritual.description }}</li>
+        {% else %}
+            <li>Aucun rituel associé</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Pactes associés</h2>
+    <ul>
+        {% for pact in item.pactLink %}
+            <li>{{ pact.name }} - {{ pact.effect }}</li>
+        {% else %}
+            <li>Aucun pacte associé</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
