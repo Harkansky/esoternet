@@ -1,4 +1,4 @@
-# Esoternet
+comm# Esoternet
 ## The central hub of the esoteric internet
 ### The one place to book interdimensional services from your favorite entities
 
