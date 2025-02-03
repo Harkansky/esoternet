@@ -21,7 +21,7 @@
 
                 <h2 class="mt-6 text-lg font-bold">Rituels associés existants</h2>
                 <div class="form-control">
-                    {{ form_row(form.existingRituals, {'attr': {'class': 'select select-bordered'}}) }}
+                    {{ form_row(form.existing_rituals, {'attr': {'class': 'select select-bordered'}}) }}
                 </div>
 
                 <h2 class="mt-6 text-lg font-bold">Ajouter de nouveaux rituels</h2>
@@ -32,7 +32,7 @@
 
                 <h2 class="mt-6 text-lg font-bold">Pactes associés existants</h2>
                 <div class="form-control">
-                    {{ form_row(form.existingPacts, {'attr': {'class': 'select select-bordered'}}) }}
+                    {{ form_row(form.existing_pacts, {'attr': {'class': 'select select-bordered'}}) }}
                 </div>
 
                 <h2 class="mt-6 text-lg font-bold">Ajouter de nouveaux pactes</h2>
@@ -60,6 +60,7 @@
                 var newForm = prototype.replace(/__name__/g, index);
                 ritualContainer.append(newForm);
             });
+
             var pactContainer = $('#new-pacts');
             $('#add-new-pact').on('click', function(e) {
                 e.preventDefault();

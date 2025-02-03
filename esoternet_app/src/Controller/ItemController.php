@@ -31,11 +31,8 @@ class ItemController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($item->getDateAdded() === null) {
-                $item->setDateAdded(new \DateTime());
-            }
 
-            $existingRituals = $form->get('existingRituals')->getData();
+            $existingRituals = $form->get('existing_rituals')->getData();
             foreach ($existingRituals as $ritual) {
                 $item->addRitualLink($ritual);
             }
@@ -43,13 +40,24 @@ class ItemController extends AbstractController
             foreach ($newRituals as $ritual) {
                 $item->addRitualLink($ritual);
             }
-            $existingPacts = $form->get('existingPacts')->getData();
+            $existingPacts = $form->get('existing_pacts')->getData();
             foreach ($existingPacts as $pact) {
                 $item->addPactLink($pact);
             }
             $newPacts = $form->get('newPacts')->getData();
+            $defaultEntity = $doctrine->getRepository(\App\Entity\Entity::class)->find(1);
+            if (!$defaultEntity) {
+                throw new \Exception("Aucune entité par défaut trouvée (ID 1).");
+            }
             foreach ($newPacts as $pact) {
+                if (null === $pact->getEntity()) {
+                    $pact->setEntity($defaultEntity);
+                }
                 $item->addPactLink($pact);
+            }
+
+            if ($item->getDateAdded() === null) {
+                $item->setDateAdded(new \DateTime());
             }
 
             $entityManager = $doctrine->getManager();
@@ -57,7 +65,6 @@ class ItemController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Item créé avec succès.');
-
             return $this->redirectToRoute('item_show', ['id' => $item->getId()]);
         }
 

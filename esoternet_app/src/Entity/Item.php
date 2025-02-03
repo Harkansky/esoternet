@@ -43,13 +43,13 @@ class Item
     /**
      * @var Collection<int, Ritual>
      */
-    #[ORM\ManyToMany(targetEntity: Ritual::class, inversedBy: 'items')]
+    #[ORM\ManyToMany(targetEntity: Ritual::class, inversedBy: 'items', cascade: ['persist'])]
     private Collection $ritualLink;
 
     /**
      * @var Collection<int, Pact>
      */
-    #[ORM\ManyToMany(targetEntity: Pact::class, inversedBy: 'items')]
+    #[ORM\ManyToMany(targetEntity: Pact::class, inversedBy: 'items', cascade: ['persist'])]
     private Collection $pactLink;
 
     /**
