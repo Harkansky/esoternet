@@ -1,4 +1,5 @@
 <?php
+// src/Entity/Pact.php
 
 namespace App\Entity;
 
@@ -30,9 +31,10 @@ class Pact
     #[ORM\ManyToMany(targetEntity: Item::class, mappedBy: 'pactLink')]
     private Collection $items;
 
+    // Utiliser ?Entity au lieu de ?entity
     #[ORM\ManyToOne(inversedBy: 'pacts')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?entity $entity = null;
+    private ?Entity $entity = null; // Modifié ici
 
     public function __construct()
     {
@@ -107,12 +109,12 @@ class Pact
         return $this;
     }
 
-    public function getEntity(): ?entity
+    public function getEntity(): ?Entity // Modifié ici
     {
         return $this->entity;
     }
 
-    public function setEntity(?entity $entity): static
+    public function setEntity(?Entity $entity): static // Modifié ici
     {
         $this->entity = $entity;
 

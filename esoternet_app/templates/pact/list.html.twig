@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Pactes{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto p-8">
+        <h1 class="text-3xl font-semibold text-center mb-8">Liste des Pactes</h1>
+
+        <!-- Wrapper -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% for pact in pacts %}
+                <div class="card bg-base-100 shadow-xl">
+                    <div class="card-body">
+                        <h2 class="card-title">
+                            {{ pact.name }}
+                        </h2>
+                        <p><strong>Effet :</strong> {{ pact.effect }}</p>
+                        <p><strong>Durée :</strong> {{ pact.duration }} jours</p>
+
+                        <div class="card-actions justify-end">
+                            <a href="{{ path('payment', {id: pact.id}) }}" class="btn btn-primary">Accéder au paiement</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

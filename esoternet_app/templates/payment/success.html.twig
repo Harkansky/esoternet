@@ -1,0 +1,8 @@
+{# templates/payment/success.html.twig #}
+
+<h1>Merci pour votre achat !</h1>
+<p>Votre paiement a bien été effectué. Vous recevrez bientôt un e-mail de confirmation.</p>
+
+<!-- Affichage des détails de la commande (optionnel) -->
+<p>Nom du produit : {{ session.line_items[0].description }}</p>
+<p>Montant : {{ session.amount_total / 100 }} {{ session.currency | upper }}</p>

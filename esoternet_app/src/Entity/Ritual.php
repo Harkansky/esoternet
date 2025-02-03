@@ -29,9 +29,9 @@ class Ritual
     private Collection $items;
 
     /**
-     * @var Collection<int, target>
+     * @var Collection<int, Target>
      */
-    #[ORM\ManyToMany(targetEntity: target::class, inversedBy: 'rituals')]
+    #[ORM\ManyToMany(targetEntity: Target::class, inversedBy: 'rituals')]
     private Collection $target;
 
     #[ORM\ManyToOne(inversedBy: 'rituals')]
