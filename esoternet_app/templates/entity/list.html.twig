@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Entités{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto p-8">
+        <h1 class="text-3xl font-semibold text-center mb-8">Liste des Entités</h1>
+
+        <!-- Wrapper -->
+        <div class="space-y-4">
+            {% for i in 0..entities|length // 3 %}
+                <div class="flex justify-between gap-6 mb-6">
+                    {% for j in 0..2 %}
+                        {% set index = i * 3 + j %}
+                        {% if index < entities|length %}
+                            {% set entity = entities[index] %}
+                            <div class="card bg-base-100 shadow-xl w-1/3 mb-4 mr-4"> <!-- Ajout de mr-4 pour un espacement entre les cartes -->
+                                <figure>
+                                    <img src="https://picsum.photos/400/225?random={{ loop.index }}" alt="{{ entity.name }}" />
+                                </figure>
+                                <div class="card-body">
+                                    <h2 class="card-title">
+                                        {{ entity.name }}
+                                        <div class="badge badge-secondary">NEW</div>
+                                    </h2>
+                                    <p>{{ entity.description|length > 100 ? entity.description[:100] ~ '...' : entity.description }}</p>
+                                    <div class="card-actions justify-end">
+                                        <div class="badge badge-outline">{{ entity.alignment }}</div>
+                                        <div class="badge badge-outline">{{ entity.domainOfInfluence }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
