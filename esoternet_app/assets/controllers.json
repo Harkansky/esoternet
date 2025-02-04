@@ -9,10 +9,6 @@
                 "enabled": false,
                 "fetch": "eager"
             }
-        },
-        "collection": {
-            "path": "controllers/collection_controller.js",
-            "export": "default"
         }
     },
     "entrypoints": []
