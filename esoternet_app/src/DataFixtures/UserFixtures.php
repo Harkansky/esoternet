@@ -8,8 +8,34 @@ use Doctrine\Persistence\ObjectManager;
 
 class UserFixtures extends BaseFixture
 {
+    protected function createOneTest(): void
+    {
+        $entity = new User();
+        $entity->setName("Test");
+        $entity->setEmail("test@test.test");
+        $entity->setPlainPassword("test");
+        $entity->setRoles(['ROLE_USER']);
+        $entity->setRegistrationDate($this->faker->dateTime());
+        $entity->setAccountStatus(UserAccountStatusEnum::ACTIVE);
+        $this->getObjectManager()->persist($entity);
+    }
+
+    protected function createOneAdmin(): void
+    {
+        $entity = new User();
+        $entity->setName("Admin");
+        $entity->setEmail("admin@admin.admin");
+        $entity->setPlainPassword("admin");
+        $entity->setRoles(['ROLE_ADMIN']);
+        $entity->setRegistrationDate($this->faker->dateTime());
+        $entity->setAccountStatus(UserAccountStatusEnum::ACTIVE);
+        $this->getObjectManager()->persist($entity);
+    }
+
     protected function loadData(ObjectManager $manager):void
     {
+        $this->createOneTest();
+        $this->createOneAdmin();
         $this->createMany(50, User::class, function (User $user, $i){
             $user->setName($this->faker->name());
             $user->setEmail($this->faker->email());
