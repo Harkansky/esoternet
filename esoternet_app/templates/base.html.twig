@@ -38,7 +38,7 @@
             </div>
         </div>
 
-=        <label class="swap swap-rotate">
+        =        <label class="swap swap-rotate">
             <input type="checkbox" class="theme-controller" id="theme-toggle" />
 
             <svg
@@ -67,17 +67,14 @@
 <script>
     const themeToggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
-
-    // Charger le thème initial depuis localStorage
     const currentTheme = localStorage.getItem('theme') || 'light';
     html.setAttribute('data-theme', currentTheme);
     themeToggle.checked = currentTheme === 'synthwave';
 
-    // Basculer le thème
     themeToggle.addEventListener('change', () => {
         const theme = themeToggle.checked ? 'synthwave' : 'light';
         html.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme); // Sauvegarde
+        localStorage.setItem('theme', theme);
     });
 </script>
 

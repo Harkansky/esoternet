@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Fiche Pacte - {{ entity.name }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        h1 { color: #333; }
+        p { font-size: 14px; }
+    </style>
+</head>
+<body>
+<div class="container mx-auto p-4 bg-white shadow-lg rounded-lg">
+    <h1 class="text-2xl font-bold">{{ entity.name }}</h1>
+    <p class="text-gray-600"><strong>Effet :</strong> {{ entity.effect }}</p>
+    <p class="text-gray-600"><strong>Durée :</strong> {{ entity.duration }} jours</p>
+    <h2 class="mt-4 text-lg font-semibold">Entité Associée</h2>
+    <p class="text-gray-600">{{ entity.entityName ?? 'Aucune entité associée' }}</p>
+</div>
+</body>
+</html>

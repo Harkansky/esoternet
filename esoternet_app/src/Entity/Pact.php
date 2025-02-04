@@ -7,6 +7,8 @@ use App\Repository\PactRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 #[ORM\Entity(repositoryClass: PactRepository::class)]
 class Pact
@@ -14,12 +16,15 @@ class Pact
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['pact:read', 'pdf:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['pact:read', 'pdf:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['pact:read', 'pdf:read'])]
     private ?string $effect = null;
 
     #[ORM\Column]

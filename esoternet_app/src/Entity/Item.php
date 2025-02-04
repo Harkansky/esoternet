@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ItemRepository::class)]
 class Item
@@ -14,18 +15,23 @@ class Item
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['item:read', 'pdf:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['item:read', 'pdf:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['item:read', 'pdf:read'])]
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Groups(['item:read', 'pdf:read'])]
     private ?float $price = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['item:read', 'pdf:read'])]
     private ?\DateTimeInterface $dateAdded = null;
 
     /**
@@ -44,12 +50,14 @@ class Item
      * @var Collection<int, Ritual>
      */
     #[ORM\ManyToMany(targetEntity: Ritual::class, inversedBy: 'items', cascade: ['persist'])]
+    #[Groups(['pdf:read'])]
     private Collection $ritualLink;
 
     /**
      * @var Collection<int, Pact>
      */
     #[ORM\ManyToMany(targetEntity: Pact::class, inversedBy: 'items', cascade: ['persist'])]
+    #[Groups(['pdf:read'])]
     private Collection $pactLink;
 
     /**
