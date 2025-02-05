@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Order;
 use App\Entity\Item;
 use App\Entity\User;
-use App\Form\PaymentFormType;
+use App\Form\PaymentType;
 use Doctrine\Persistence\ManagerRegistry;
 use Stripe\Stripe;
 use Stripe\Checkout\Session as CheckoutSession;
@@ -27,7 +27,7 @@ class PaymentController extends AbstractController
     #[Route('/payment/{id}', name: 'app_payment', requirements: ['id' => '\d+'])]
     public function payment(Item $item, Request $request): Response
     {
-        $form = $this->createForm(PaymentFormType::class, null, [
+        $form = $this->createForm(PaymentType::class, null, [
             'price' => $item->getPrice()
         ]);
 

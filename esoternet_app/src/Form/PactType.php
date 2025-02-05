@@ -18,23 +18,46 @@ class PactType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom du Pacte',
-                'attr'  => ['class' => 'input input-bordered']
+                'label_attr' => [
+                    'class' => 'block font-medium '
+                ],
+                'attr' => ['placeholder' => 'Votre nom complet',
+                            'class' => 'form-input block border border-gray-300 text-sm p-2 w-full shadow-sm focus:outline-none',
+                            'style' => 'border-radius:5px'
+                        ],
             ])
             ->add('effect', TextType::class, [
                 'label' => 'Effet',
-                'attr'  => ['class' => 'input input-bordered']
+                'label_attr' => [
+                    'class' => 'block font-medium '
+                ],
+                'attr' => ['placeholder' => 'Votre nom complet',
+                            'class' => 'form-input block border border-gray-300 text-sm p-2 w-full shadow-sm focus:outline-none',
+                            'style' => 'border-radius:5px'
+                        ],
             ])
             ->add('duration', TextType::class, [
                 'label' => 'Durée (en jours)',
                 'required' => false,
-                'attr'  => ['class' => 'input input-bordered']
+                'label_attr' => [
+                    'class' => 'block font-medium '
+                ],
+                'attr' => ['placeholder' => 'Votre nom complet',
+                            'class' => 'form-input block border border-gray-300 text-sm p-2 w-full shadow-sm focus:outline-none',
+                            'style' => 'border-radius:5px'
+                        ],
             ])
             ->add('entity', EntityType::class, [
                 'class' => Entity::class,
                 'choice_label' => 'name',
                 'placeholder'  => 'Sélectionnez une entité',
                 'required'     => true,
-                'attr'         => ['class' => 'select select-bordered']
+                'label_attr' => [
+                    'class' => 'block font-medium mt-3 '
+                ],
+                'attr' => ['class' => 'select w-full max-w-xs block border border-gray-500',
+                            'style' => 'border-color:darkgray'
+                            ],
             ]);
     }
 

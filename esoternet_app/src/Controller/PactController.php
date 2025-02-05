@@ -18,4 +18,13 @@ class PactController extends AbstractController
             'pacts' => $pacts,
         ]);
     }
+
+    #[Route('/pact/{id}', name: 'pact_show', requirements: ['id' => '\d+'])]
+    public function show(Pact $pact): Response
+    {
+
+        return $this->render('pact/show.html.twig', [
+            'pact' => $pact,
+        ]);
+    }
 }

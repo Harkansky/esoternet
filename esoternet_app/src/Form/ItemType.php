@@ -18,17 +18,35 @@ class ItemType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom de l\'Item',
-                'attr'  => ['class' => 'input input-bordered']
+                'label_attr' => [
+                    'class' => 'block font-medium '
+                ],
+                'attr' => ['placeholder' => 'Votre nom complet',
+                            'class' => 'form-input block border border-gray-300 text-sm p-2 w-full shadow-sm focus:outline-none',
+                            'style' => 'border-radius:5px'
+                        ],
             ])
             ->add('description', TextType::class, [
                 'label'    => 'Description',
                 'required' => false,
-                'attr'     => ['class' => 'input input-bordered']
+                'label_attr' => [
+                    'class' => 'block font-medium '
+                ],
+                'attr' => ['placeholder' => 'Description',
+                            'class' => 'form-input block border border-gray-300 text-sm p-2 w-full shadow-sm focus:outline-none',
+                            'style' => 'border-radius:5px'
+                        ],
             ])
             ->add('price', MoneyType::class, [
                 'label'    => 'Prix',
                 'currency' => 'EUR',
-                'attr'     => ['class' => 'input input-bordered']
+                'label_attr' => [
+                    'class' => 'block font-medium '
+                ],
+                'attr' => ['placeholder' => 'Prix',
+                            'class' => 'form-input block border border-gray-300 text-sm p-2 w-full shadow-sm focus:outline-none',
+                            'style' => 'border-radius:5px'
+                        ],
             ])
             ->add('existing_rituals', EntityType::class, [
                 'class' => \App\Entity\Ritual::class,
@@ -37,7 +55,10 @@ class ItemType extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'mapped'   => false,
-                'attr'     => ['class' => 'select select-bordered']
+                'attr'     => ['class' => 'select select-bordered'],
+                'label_attr' => [
+                    'class' => 'block font-medium mt-3 '
+                ],
             ])
             ->add('newRituals', CollectionType::class, [
                 'entry_type'   => RitualType::class,
@@ -48,6 +69,9 @@ class ItemType extends AbstractType
                 'required'     => false,
                 'mapped'       => false,
                 'label'        => 'Nouveaux rituels',
+                'label_attr' => [
+                    'class' => 'block font-medium mt-3 '
+                ],
             ])
             ->add('existing_pacts', EntityType::class, [
                 'class' => \App\Entity\Pact::class,
@@ -56,7 +80,12 @@ class ItemType extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'mapped'   => false,
-                'attr'     => ['class' => 'select select-bordered']
+                'label_attr' => [
+                    'class' => 'block font-medium mt-3 '
+                ],
+                'attr' => ['class' => 'select w-full max-w-xs block border border-gray-500',
+                            'style' => 'border-color:darkgray'
+                            ],
             ])
             ->add('newPacts', CollectionType::class, [
                 'entry_type'   => \App\Form\PactType::class,

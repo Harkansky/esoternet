@@ -17,7 +17,7 @@ class ItemFixtures extends BaseFixture implements DependentFixtureInterface
     protected function loadData(ObjectManager $manager):void
     {
         $this->createMany(50, Item::class, function (Item $item, $i){
-            $item->setName($this->faker->words(null, true));
+            $item->setName($this->faker->word(null, true));
             $item->setDateAdded($this->faker->dateTime());
             $item->setDescription($this->faker->text());
             $item->setOrigin($this->getEntityReference("region_" . rand(0,49), Region::class));

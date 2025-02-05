@@ -4,13 +4,24 @@
 
 {% block body %}
     <section>
-        <nav class="flex space-x-6 text-gray-400 font-medium">
-            <a href="{{ path('register') }}" class="hover:text-gray-700">Register</a>
-            <a href="{{ path('page_login') }}" class="hover:text-gray-700">Login</a>
-            <form method="POST" action="{{ path('page_logout') }}">
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
-                <button type="submit">Logout</button>
-            </form>
-        </nav>
+        <div class="hero bg-base-200 min-h-[90vh] max-sm:w-full">
+            <div class="hero-content flex-col lg:flex-row-reverse max-sm:p-0">
+                <img
+                src="/images/hero.jpg"
+                alt="Hero" 
+                class="max-w-sm rounded-lg shadow-2xl" />
+                <div>
+                    <h1 class="text-5xl font-bold">Esoternet - maudire sans encombre</h1>
+                    <p class="py-6">
+                        Plongez dans l’univers mystique de notre e-shop ésotérique, où spiritualité, magie et bien-être se rencontrent à travers une sélection unique d’articles enchantés. 🔮✨
+                    </p>
+                    {% if app.user %}
+                        <a href="/entity"><button class="btn btn-primary" > Nos produits </button></a>
+                    {% else %}
+                        <a href="{{ path('page_login') }}"><button class="btn btn-primary">Get Started</button></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </section>
 {% endblock %}

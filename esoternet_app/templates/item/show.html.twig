@@ -4,25 +4,40 @@
 {% block title %}Détails de l'Item{% endblock %}
 
 {% block body %}
-    <h1>{{ item.name }}</h1>
-    <p>Description: {{ item.description }}</p>
-    <p>Prix: {{ item.price }} €</p>
+<div style='height:80vh'>
+    <section class='flex flex-nowrap flex-col sm:flex-row lg:w-[80vw] lg:mt-[5%] m-auto  border-4 border-black-600 rounded-lg '>
+        <div class='sm:pr-2 bg-slate-600 max-sm:mb-5'>
+            <div class="artboard phone-1 max-sm:m-auto"><img src="https://picsum.photos/320/568?random{{item.id}}" alt="{{ item.name }}" /></div>
+        </div>
+        <div class='pr-2 pl-2 flex justify-center flex-col'>
+            <h1 class='text-4xl font-medium pb-5'>{{ item.name | upper }}</h1>
+            <p class='ltext-2x pb-3'> Prix: {{ item.price }} €</p>
+            <p>Description: {{ item.description }}</p>
 
-    <h2>Rituels associés</h2>
-    <ul>
-        {% for ritual in item.ritualLink %}
-            <li>{{ ritual.name }} - {{ ritual.description }}</li>
-        {% else %}
-            <li>Aucun rituel associé</li>
-        {% endfor %}
-    </ul>
+            <br/>
 
-    <h2>Pactes associés</h2>
-    <ul>
-        {% for pact in item.pactLink %}
-            <li>{{ pact.name }} - {{ pact.effect }}</li>
-        {% else %}
-            <li>Aucun pacte associé</li>
-        {% endfor %}
-    </ul>
+            <h2>Rituels associés</h2>
+            <ul>
+                {% for ritual in item.ritualLink %}
+                    <li> <span class='font-medium underline'><a href={{ path('item_show',  {'id': ritual.id}) }}>{{ ritual.name }}</a></span> - {{ ritual.description }}</li>
+                {% else %}
+                    <li>Aucun rituel associé</li>
+                {% endfor %}
+            </ul>
+
+            <br/>
+
+            <h2>Pactes associés</h2>
+            <ul class='pb-4'>
+                {% for pact in item.pactLink %}
+                    <li><span class='font-medium underline'><a href={{ path('item_show',  {'id': pact.id}) }}>{{ pact.name }}</a></span> - {{ pact.effect }}</li>
+                {% else %}
+                    <li>Aucun pacte associé</li>
+                {% endfor %}
+            </ul>
+
+            <ul class='w-full text-right p-5'> <a href={{ path('app_payment',  {'id': item.id}) }}><button class='btn btn-success'>Acheter</button> </a>
+        </div>
+    </section>
+</div>
 {% endblock %}

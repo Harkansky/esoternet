@@ -1,25 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Esoternet - Register {% endblock %}
+{% block title %}Esoternet - Inscription {% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+    <section class='flex flex-nowrap flex-col w-[70vw] mt-[5%] m-auto border-4 border-black-600 rounded-lg'>
+        {% for flash_error in app.flashes('verify_email_error') %}
+            <div class="alert alert-danger mt-3" role="alert">{{ flash_error }}</div>
+        {% endfor %}
 
-    <h1>Esoternet - Register</h1>
+        <h1 class='text-4xl font-medium pb-5 pt-5 text-center'>Esoternet - Inscription</h1>
 
-    {{ form_errors(registrationForm) }}
+        {{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.repeatPassword) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        <div class="flex justify-center align-middle flex-col w-full p-4 m-auto">
+            {{ form_start(registrationForm) }}
+                {{ form_row(registrationForm.name) }}
+                {{ form_row(registrationForm.email) }}
+                {{ form_row(registrationForm.plainPassword, {
+                    label: 'Password'
+                }) }}
+                {{ form_row(registrationForm.repeatPassword) }}
+                {{ form_row(registrationForm.agreeTerms) }}
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+                <button type="submit" class="btn btn-success mb-3 mt-3 w-full">S'inscrire</button>
+            {{ form_end(registrationForm) }}
+        </div>
+    </section>
 {% endblock %}
 
