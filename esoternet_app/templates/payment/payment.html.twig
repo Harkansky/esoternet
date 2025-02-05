@@ -4,7 +4,7 @@
 
 {% block body %}
     <section class='flex flex-nowrap flex-col lg:w-[50vw] lg:mt-[5%] m-auto  border-4 border-black-600 rounded-lg p-5'>
-        <h1 class='mt-2 mb-5 text-2xl text-center'>Paiement pour <a href={{ path('item_show',  {'id': item.id}) }} class='font-medium'>{{ item.name }}</a></h1>
+        <h1 class='mt-2 mb-5 text-2xl text-center'>Paiement</h1>
         <p class='mb-3 text-lg'>Prix : {{ item.price }} €</p>
 
         {{ form_start(form) }}
