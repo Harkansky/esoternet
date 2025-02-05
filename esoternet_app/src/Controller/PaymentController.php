@@ -120,9 +120,9 @@ class PaymentController extends AbstractController
             $order->setOrderDate(new \DateTime());
             $order->setTotalAmount($session->amount_total / 100);
 
-            $user = $this->doctrine->getRepository(User::class)->find(1);
+            $user = $this->getUser();
             if (!$user) {
-                throw new \Exception("User with id 1 not found.");
+                throw new \Exception("Utilisateur non connecté.");
             }
             $order->setPurchaser($user);
 

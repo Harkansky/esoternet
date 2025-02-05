@@ -27,8 +27,8 @@ security:
                 enable_csrf: true
 
     role_hierarchy:
-        ROLE_SUPER_ADMIN : ROLE_ADMIN
-        ROLE_CUSTOMER: ROLE_CUSTMER
+        ROLE_SUPER_ADMIN : [ROLE_ADMIN]
+        ROLE_ADMIN: [ROLE_USER]
         ROLE_USER: []
         ROLE_BANNED: [] 
     # Easy way to control access for large sections of your site

@@ -14,6 +14,34 @@
 <nav class="navbar bg-base-100 shadow-lg">
     <div class="container mx-auto flex justify-between">
 
+        <a href="{{ path('home') }}" class="btn btn-ghost normal-case text-xl">
+            <img src="/images/logo.png" alt="Logo" class="h-12" />
+        </a>
+
+        <div class="hidden lg:flex">
+            <ul class="menu menu-horizontal px-1">
+                <li><a href="{{ path('home') }}">Accueil</a></li>
+                {% if is_granted('SHOW_LOGIN_POPUP') %}
+                    <li><a href="/entity">Entitée</a></li>
+                    <li><a href="/items">Items</a></li>
+                    <li><a href="/pact">Pacte</a></li>
+                    <li><a href="/about-us">À propos</a></li>
+                    <li><a href="{{ path('page_login') }}">Se connecter</a></li>
+                {% else %}
+                    <li><a href="#" onclick="showLoginPopup(event)">Entitée</a></li>
+                    <li><a href="#" onclick="showLoginPopup(event)">Items</a></li>
+                    <li><a href="#" onclick="showLoginPopup(event)">Pacte</a></li>
+                    <li><a href="#" onclick="showLoginPopup(event)">À propos</a></li>
+                    <li>
+                        <form method="POST" action="{{ path('page_logout') }}">
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
+                            <button type="submit">Se déconnecter</button>
+                        </form>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+
         <div class="lg:hidden">
             <div class="dropdown">
                 <label tabindex="0" class="btn btn-ghost lg:hidden">
@@ -23,49 +51,31 @@
                 </label>
                 <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-b-lg w-52 z-10" >
                     <li><a href="{{ path('home') }}">Accueil</a></li>
-                    <li><a href="/entity">Entités</a></li>
-                    <li><a href={{ path('app_items') }}>Items</a></li>
-                     <li><a href={{ path('pact_list') }}>Pactes</a></li>
-                    <li><a href="{{ path('page_about_us') }}">À propos</a></li>
-                    {% if app.user %}
+                    {% if is_granted('SHOW_LOGIN_POPUP') %}
+                        <li><a href="/entity">Entitée</a></li>
+                        <li><a href="/items">Items</a></li>
+                        <li><a href="/pact">Pacte</a></li>
+                        <li><a href="/about-us propos">À propos</a></li>
+                        <li><a href="{{ path('page_login') }}">Se connecter</a></li>
+                    {% else %}
+                        <li><a href="#" onclick="showLoginPopup(event)">Entitée</a></li>
+                        <li><a href="#" onclick="showLoginPopup(event)">Items</a></li>
+                        <li><a href="#" onclick="showLoginPopup(event)">Pacte</a></li>
+                        <li><a href="#" onclick="showLoginPopup(event)">À propos</a></li>
                         <li>
                             <form method="POST" action="{{ path('page_logout') }}">
                                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
                                 <button type="submit">Se déconnecter</button>
                             </form>
                         </li>
-                    {% else %}
-                        <li><a href="{{ path('page_login') }}">Se connecter</a></li>
                     {% endif %}
+                    
                 </ul>
             </div>
         </div>
 
-        <a href="{{ path('home') }}" class="btn btn-ghost normal-case text-xl">
-            <img src="/images/logo.png" alt="Logo" class="h-12" />
-        </a>
 
-        <div class="hidden lg:flex">
-            <ul class="menu menu-horizontal px-1">
-                <li><a href="{{ path('home') }}">Accueil</a></li>
-                <li><a href="/entity">Entités</a></li>
-                <li><a href={{ path('app_items') }}>Items</a></li>
-                <li><a href={{ path('pact_list') }}>Pactes</a></li>
-                <li><a href="{{ path('page_about_us') }}">À propos</a></li>
-                {% if app.user %}
-                    <li>
-                        <form method="POST" action="{{ path('page_logout') }}">
-                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
-                            <button type="submit">Se déconnecter</button>
-                        </form>
-                    </li>
-                {% else %}
-                    <li><a href="{{ path('page_login') }}">Se connecter</a></li>
-                {% endif %}
-            </ul>
-        </div>
-
-        <label class="swap swap-rotate">
+       <label class="swap swap-rotate">
             <input type="checkbox" class="theme-controller" id="theme-toggle" />
 
             <svg
@@ -135,18 +145,20 @@
 <script>
     const themeToggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
-
-    // Charger le thème initial depuis localStorage
     const currentTheme = localStorage.getItem('theme') || 'light';
     html.setAttribute('data-theme', currentTheme);
     themeToggle.checked = currentTheme === 'synthwave';
 
-    // Basculer le thème
     themeToggle.addEventListener('change', () => {
         const theme = themeToggle.checked ? 'synthwave' : 'light';
         html.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme); // Sauvegarde
+        localStorage.setItem('theme', theme);
     });
+    function showLoginPopup(event) {
+        event.preventDefault();
+        alert("🚀 Vous devez être connecté pour accéder à cette page !");
+    }
 </script>
+
 
 
