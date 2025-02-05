@@ -8,6 +8,9 @@ parameters:
     stripe.public_key: '%env(STRIPE_PUBLIC_KEY)%'
 
 services:
+    App\Security\PopupVoter:
+        tags: ['security.voter']
+
     Symfony\Component\Serializer\Normalizer\ObjectNormalizer:
         arguments:
             $defaultContext:
