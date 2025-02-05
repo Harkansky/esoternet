@@ -1,8 +1,17 @@
-{# templates/payment/success.html.twig #}
+{% extends 'base.html.twig' %}
 
-<h1>Merci pour votre achat !</h1>
-<p>Votre paiement a bien été effectué. Vous recevrez bientôt un e-mail de confirmation.</p>
+{% block title %}Confirmation de Paiement{% endblock %}
 
-<!-- Affichage des détails de la commande (optionnel) -->
-<p>Nom du produit : {{ session.line_items[0].description }}</p>
-<p>Montant : {{ session.amount_total / 100 }} {{ session.currency | upper }}</p>
+{% block body %}
+    <section class='flex flex-nowrap flex-col lg:w-[50vw] lg:mt-[5%] m-auto border-4 border-black rounded-lg p-5'>
+        <h1 class='mt-2 mb-5 text-2xl text-center'>Merci pour votre achat !</h1>
+        <p class='mb-3 text-lg'>Votre paiement a bien été effectué</p>
+
+        <p class='mb-3 text-lg'>Nom du produit : {{ session.line_items[0].description }}</p>
+        <p class='mb-3 text-lg'>Montant : {{ session.amount_total / 100 }} {{ session.currency | upper }}</p>
+
+        <div class='text-center mt-5'>
+            <a href="{{ path('home') }}" class='px-4 py-2 border-2 border-green-500 text-green-500 rounded hover:bg-green-500 hover:text-white transition duration-300'>Retourner à l'accueil</a>
+        </div>
+    </section>
+{% endblock %}

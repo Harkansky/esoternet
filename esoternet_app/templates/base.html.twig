@@ -26,18 +26,21 @@
                     <li><a href="/items">Items</a></li>
                     <li><a href="/pact">Pacte</a></li>
                     <li><a href="/about-us">À propos</a></li>
-                    <li><a href="{{ path('page_login') }}">Se connecter</a></li>
                 {% else %}
                     <li><a href="#" onclick="showLoginPopup(event)">Entitée</a></li>
                     <li><a href="#" onclick="showLoginPopup(event)">Items</a></li>
                     <li><a href="#" onclick="showLoginPopup(event)">Pacte</a></li>
                     <li><a href="#" onclick="showLoginPopup(event)">À propos</a></li>
+                {% endif %}
+                {% if app.user %}
                     <li>
                         <form method="POST" action="{{ path('page_logout') }}">
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
                             <button type="submit">Se déconnecter</button>
                         </form>
                     </li>
+                {% else %}
+                    <li><a href="{{ path('page_login') }}">Se connecter</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -56,20 +59,24 @@
                         <li><a href="/items">Items</a></li>
                         <li><a href="/pact">Pacte</a></li>
                         <li><a href="/about-us propos">À propos</a></li>
-                        <li><a href="{{ path('page_login') }}">Se connecter</a></li>
                     {% else %}
                         <li><a href="#" onclick="showLoginPopup(event)">Entitée</a></li>
                         <li><a href="#" onclick="showLoginPopup(event)">Items</a></li>
                         <li><a href="#" onclick="showLoginPopup(event)">Pacte</a></li>
                         <li><a href="#" onclick="showLoginPopup(event)">À propos</a></li>
+
+                    {% endif %}
+                    {% if app.user %}
                         <li>
                             <form method="POST" action="{{ path('page_logout') }}">
                                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
                                 <button type="submit">Se déconnecter</button>
                             </form>
                         </li>
+                    {% else %}
+                        <li><a href="{{ path('page_login') }}">Se connecter</a></li>
                     {% endif %}
-                    
+
                 </ul>
             </div>
         </div>
@@ -156,7 +163,7 @@
     });
     function showLoginPopup(event) {
         event.preventDefault();
-        alert("🚀 Vous devez être connecté pour accéder à cette page !");
+        alert("Vous devez être connecté pour accéder à cette page !");
     }
 </script>
 

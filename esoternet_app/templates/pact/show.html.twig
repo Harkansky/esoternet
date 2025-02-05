@@ -27,7 +27,11 @@
             <br/>
 
 
-            <ul class='w-full text-right p-5'> <a href=''><button class='btn btn-success'>Télécharger le PDF</button> </a>
+            <ul class='w-full text-right p-5'>
+                <a href='{{ path("pdf_generate", {"entityType": "pact", "id": pact.id}) }}'>
+                    <button class='btn btn-success'>Télécharger le PDF</button>
+                </a>
+            </ul>
         </div>
     </section>
 </div>
