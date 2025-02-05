@@ -50,7 +50,7 @@ class PaymentController extends AbstractController
     {
         Stripe::setApiKey($this->getParameter('stripe.secret_key'));
 
-        $name = $item->getName() ?: 'Produit sans nom';
+        $name = $item->getName() ?: 'Produit';
         $price = $item->getPrice() ?: 1000;
 
         $session = CheckoutSession::create([
