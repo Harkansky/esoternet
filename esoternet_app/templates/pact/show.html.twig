@@ -1,0 +1,34 @@
+{# templates/pact/show.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du pact{% endblock %}
+
+{% block body %}
+<div style='height:80vh'>
+    <section class='flex flex-nowrap flex-col sm:flex-row lg:w-[80vw] lg:mt-[5%] m-auto  border-4 border-black-600 rounded-lg '>
+        <div class='sm:pr-2 bg-slate-600 max-sm:mb-5'>
+            <div class="artboard phone-1 max-sm:m-auto"><img src="https://picsum.photos/320/568?random{{pact.id}}" alt="{{ pact.name }}" /></div>
+        </div>
+        <div class='pr-2 pl-2 flex justify-center flex-col'>
+            <h1 class='text-4xl font-medium pb-5'>{{ pact.name | upper }}</h1>
+            <p>Description: {{ pact.effect }}</p>
+
+            <br/>
+
+            <h2>Rituels associés</h2>
+            <ul>
+                {% for entity in pact.getEntity %}
+                    <li> <span class='font-medium underline'><a href={{ path('pact_show',  {'id': ritual.id}) }}>{{ ritual.name }}</a></span> - {{ ritual.description }}</li>
+                {% else %}
+                    <li>Aucun rituel associé</li>
+                {% endfor %}
+            </ul>
+
+            <br/>
+
+
+            <ul class='w-full text-right p-5'> <a href=''><button class='btn btn-success'>Télécharger le PDF</button> </a>
+        </div>
+    </section>
+</div>
+{% endblock %}
