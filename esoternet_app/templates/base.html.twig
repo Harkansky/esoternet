@@ -16,9 +16,17 @@
         <div class="hidden lg:flex">
             <ul class="menu menu-horizontal px-1">
                 <li><a href="{{ path('home') }}">Accueil</a></li>
-                <li><a href="/entity">Entitée</a></li>
-                <li><a href="/pact">Pacte</a></li>
-                <li><a href="/contact">Contact</a></li>
+                {% if is_granted('SHOW_LOGIN_POPUP') %}
+                    <li><a href="/entity">Entitée</a></li>
+                    <li><a href="/pact">Pacte</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                {% else %}
+                    <li><a href="#" onclick="showLoginPopup(event)">Entitée</a></li>
+                    <li><a href="#" onclick="showLoginPopup(event)">Pacte</a></li>
+                    <li><a href="#" onclick="showLoginPopup(event)">Contact</a></li>
+                {% endif %}
+
+
             </ul>
         </div>
 
@@ -31,9 +39,15 @@
                 </label>
                 <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                     <li><a href="{{ path('home') }}">Accueil</a></li>
-                    <li><a href="/shop">Produits</a></li>
-                    <li><a href="/about">À propos</a></li>
-                    <li><a href="/contact">Contact</a></li>
+                    {% if is_granted('SHOW_LOGIN_POPUP') %}
+                        <li><a href="/entity">Entitée</a></li>
+                        <li><a href="/pact">Pacte</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    {% else %}
+                        <li><a href="#" onclick="showLoginPopup(event)">Entitée</a></li>
+                        <li><a href="#" onclick="showLoginPopup(event)">Pacte</a></li>
+                        <li><a href="#" onclick="showLoginPopup(event)">Contact</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -76,6 +90,11 @@
         html.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
     });
+    function showLoginPopup(event) {
+        event.preventDefault();
+        alert("🚀 Vous devez être connecté pour accéder à cette page !");
+    }
 </script>
+
 
 
