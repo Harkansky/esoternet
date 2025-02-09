@@ -35,6 +35,9 @@
                 {% endif %}
                 {% if app.user %}
                     <li><a href="/profil">Profil</a></li>
+                    {% if app.user.roles == ["ROLE_ADMIN"] %}
+                        <li><a href="/admin">Admin</a></li>
+                    {% endif %}
                     <li>
                         <form method="POST" action="{{ path('page_logout') }}">
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
@@ -70,6 +73,9 @@
 
                     {% endif %}
                     {% if app.user %}
+                        {% if app.user.roles == ["ROLE_ADMIN"] %}
+                            <li><a href="/admin">Admin</a></li>
+                        {% endif %}
                         <li>
                             <form method="POST" action="{{ path('page_logout') }}">
                                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
