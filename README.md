@@ -1,17 +1,24 @@
-comm# Esoternet
+# Esoternet
 ## The central hub of the esoteric internet
 ### The one place to book interdimensional services from your favorite entities
 
 #### 1. Setup
 
-This project uses a makefile, the Symfony php framework and the Composer dependencies manager. Make sure you have all requirements installed. Once the repository is cloned, run one of the commands :
+Commandes à exécuter dans l'ordre à la racine du projet (dossier esoternet) :
+1. `make start` puis suivre les prompts dans le terminal
+2. `make migration` pour effectuer les migrations
+3. `make fixture` pour charger la base de données avec des données de test
 
-- `make start` : If needed, prompts the user to configure the project, then builds images and runs containers.
-- `make migration` : Runs all available migrations in the database container.
-- `make schema` : If you modify the database schema, updates the database, creates migrations and executes them.
-- `make fixture` : Loads avilable fixture.
-- `make resetdb` : Deletes and re-creates the database in the container.
-- `make entity` : Creates or updates a new entity using Symfony CLI.
+Ensuite, ouvrez votre navigateur et rendez vous à l'adresse `localhost:[VOTRE PORT]` pour commencer à explorer esoternet.
+
+Ce projet utilise un makefile, le framework PHP Symfony et le gestionnaire de dépendances Composer. Assurez-vous d'avoir installé toutes les dépendances requises. Une fois le dépôt cloné, exécutez l'une des commandes suivantes :  
+
+- `make start` : Si nécessaire, invite l'utilisateur à configurer le projet, puis construit les images et exécute les conteneurs.  
+- `make migration` : Exécute toutes les migrations disponibles dans le conteneur de base de données.  
+- `make schema` : Si vous modifiez le schéma de la base de données, met à jour la base de données, crée les migrations et les exécute.  
+- `make fixture` : Charge les fixtures disponibles.  
+- `make resetdb` : Supprime et recrée la base de données dans le conteneur.  
+- `make entity` : Crée ou met à jour une entité en utilisant la CLI de Symfony.
 
 ## API Keys
 
