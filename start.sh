@@ -29,4 +29,4 @@ set -a
 set +a
 
 # Lance les containers
-docker compose -f ./esoternet_app/compose.yaml up -d --remove-orphans
+docker compose -f ./esoternet_app/compose.yaml up -d --remove-orphans --build
