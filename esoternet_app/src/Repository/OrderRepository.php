@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Order;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -63,6 +64,16 @@ class OrderRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findOrdersByUser(User $user)
+    {
+        return $this->createQueryBuilder('o')
+            ->where('o.purchaser = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
 
     //    /**
     //     * @return Order[] Returns an array of Order objects
